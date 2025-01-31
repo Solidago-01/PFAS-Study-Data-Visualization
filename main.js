@@ -168,7 +168,7 @@ var cheatRiverCount = 0;
 var greenbrierRiverCaldwellCount = 0;
 var greenbrierRiverSeebertCount = 0;
 
-console.log(site);
+// console.log(site);
 
 site.forEach(entry => {
   if (entry == "Swatara Creek") {
@@ -223,8 +223,8 @@ const waterSiteSampleCounts = [swataraCreekCount,
   greenbrierRiverSeebertCount
 ]
 
-console.log(waterSiteNames);
-console.log(waterSiteSampleCounts);
+// console.log(waterSiteNames);
+// console.log(waterSiteSampleCounts);
 
 const coursesData = { 
   labels: waterSiteNames, 
@@ -266,9 +266,6 @@ fetch('https://www.sciencebase.gov/catalog/item/65e22659d34e5855ff4cf488?format=
   document.getElementById("studyLink").href=data.link.url; 
   document.getElementById("studySummary").innerHTML = data.summary;
   document.getElementById("studyPurpose").innerHTML = data.purpose;
-
-  // console.log(data.summary);
-  // console.log(data.purpose);
-  // console.log(data.rights);
-  console.log(data)
+  document.getElementById("studyRights").innerHTML = `[The study] ${data.rights}`;
+  // console.log(data)
 });
