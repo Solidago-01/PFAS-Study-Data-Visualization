@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alumni+Sans+Pinstripe:ital@0;1&family=Bebas+Neue&display=swap" rel="stylesheet">
+    
+    <title>Study Report Data Visualization</title>
+</head>
+<body>
+
+    <header>
+
+      <div class="heroImage">
+        <img id="forest" src="forest-hero.jpg" alt="">
+      </div>
+
+      <div class="heroText">
+        <h1 id="studyTitle">Title</h1>
+        <h2 id="studyCitation">Citation</h2>
+        <a id="studyLink" href="#" target="_blank">See Full Geological Survey Data Release →</a>
+      </div>
+
+    </header>
+
+    <div class="contentWrapper">
+
+      <section>
+        <h2>Summary</h2>
+        <p id="studySummary">Summary Text</p>
+        <h2>Purpose</h2>
+        <p id="studyPurpose">Purpose Text</p>
+      </section>
+
+      <section>
+        <h2>Sample Distribution and Site Locations</h2>
+        <div class="mapGrid">
+          <div id="doughnut">
+              <canvas id="myChart3" height="700"></canvas>
+          </div>
+          <img id="map" src="/Mid-Atlantic-Map.svg" alt="" srcset="">
+        </div>
+      </section>
+
+      <section>
+        <h2>Total Plasma PFAS (ng/ml) Charted Over Time</h2>
+        <h2 id="json-title"></h2>
+        <div id="chartContainer">
+            <canvas id="myChart"></canvas>
+        </div>
+      </section>
+      
+      <section>
+        <h2>Fish Age Charted Against Total PFAS (ng/ml)</h2>
+        <div id="chartContainer">
+            <canvas id="myChart2" height="700"></canvas>
+        </div>
+      </section>
+      
+
+
+
+
+    </div>
+    <script src="main.js" type="module"></script>
+</body>
+</html>
