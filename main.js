@@ -1,30 +1,30 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
-// Bar Chart
+// Create Array of Colors to Use in Charts
+const colors = ['#5fb1f4', '#5f66f4', '#5ff4ed', '#f4d65f', '#f48c5f', '#5ff4a5'];
+
+// Vertical Bar Chart
 // ////////////
 
-
-// Visualization init
+// Visualization Init
 const xLabels = [];
 const yValues = [];
 const site = [];
 const unsortedData = [];
 
-// Parse csv data using D3
-const csvLink = "/plasma-data.csv"
-// const csvLink = "https://raw.githubusercontent.com/Solidago-01/GitHub-Hosted-Files/refs/heads/main/plasma-data.csv"
-const data = await d3.text(csvLink); 
+// Parse CSV Data Using D3
+const data = await d3.text("/plasma-data.csv"); 
 
-// Split rows on every line break
+// Split Rows On Every Line Break
 // Returns array of rows as strings, omits the first row (category names)
 const table = data.split('\n').slice(1);
 
-// Split each row string into separate values along the commas
+// Split Row Strings Into Separate Values Along Commas
 // For each row, returns array of newly split values
 table.forEach(row => {
     const column = row.split(',');
 
-    // For each row, extract out only matching value at named column
+    // Per Row, Extract Only Matching Value at Named Column
     const siteName = column[0];
     const fishIdentification = column[1];
     const collectionDate = column[2];
@@ -43,7 +43,7 @@ table.forEach(row => {
     const PFOA = column[15];
     const totalPFAS = column[16];
     
-    // Generate unsorted, binded data to eventually sort(), and resplit
+    // Generate Unsorted, Binded Data to Sort(), and Resplit
     const unsortedDataPoint = [];
     unsortedDataPoint.push(collectionDate);
     unsortedDataPoint.push(Number(totalPFAS));
@@ -52,13 +52,13 @@ table.forEach(row => {
 })
 
 
-// Custom ascending sort for date time strings
+// Custom Ascending Sort for Date/Time Strings
 const sortedData = unsortedData.sort(function(a, b) {
-    // Convert the date strings to Date objects
+    // Convert Date Strings to Date Objects
     let dateA = new Date(a[0]);
     let dateB = new Date(b[0]);
   
-    // Subtract the dates to get a value that is either negative, positive, or zero
+    // Subtract the Dates for Value that is Either Negative, Positive, or Zero
     return dateA - dateB;
 });
 
@@ -71,7 +71,7 @@ sortedData.forEach(dataPair => {
     site.push(c);
 })
 
-const ctx = document.getElementById('myChart');
+const ctx = document.getElementById('verticalBarChart');
 
 new Chart(ctx, {
   type: 'bar',
@@ -80,7 +80,9 @@ new Chart(ctx, {
     datasets: [{
       label: `Total PFAS`,
       data: yValues,
-      borderWidth: 1
+      borderWidth: 1,
+      borderColor: colors[3],      
+      backgroundColor: colors[3], 
     }]
   },
   options: {
@@ -100,13 +102,11 @@ new Chart(ctx, {
 // Scatter Plot
 // ////////////
 
-
-// Call data as array of objects
+// Call Data as Array of Objects
 // Scatter plot will use array of objects
-const data2 = await d3.csv(csvLink); 
-// console.log(data3);
+const data2 = await d3.csv("/plasma-data.csv"); 
 
-// Remove unwanted key/value pairs
+// Remove Unwanted Key/Value Pairs
 data2.forEach(object => {
   delete object["Collection Date"];
   delete object["Length (mm)"];
@@ -124,19 +124,14 @@ data2.forEach(object => {
   delete object["Weight (gms)"];
   delete object["Fish identification"];
 
-  // rename remaining keys "Age (years)" and "Total PFAS" to x and y
+  // Rename Remaining Keys "Age (years)" and "Total PFAS" to "x" and "y"
   object["x"] = object['Age (years)'];
   delete object['Age (years)'];
   object["y"] = object['Total PFAS'];
   delete object['Total PFAS'];
 })
 
-var ctx2 = document.getElementById("myChart2").getContext('2d');
-
-var options = {responsive: true, 
-    maintainAspectRatio: false, 
-};
-
+var ctx2 = document.getElementById("scatterChart").getContext('2d');
 
 var myChart2 = new Chart(ctx2, {
     type: 'scatter',
@@ -144,18 +139,21 @@ var myChart2 = new Chart(ctx2, {
         datasets: [{
                 label: 'Age (Years) vs Total PFAS', 
                 data: data2, 
-          borderColor: '#2196f3',      
-          backgroundColor: '#2196f3', 
+          borderColor: colors[2],      
+          backgroundColor: colors[2], 
             }]
     },
-    options: options
+    options: {
+      responsive: true, 
+      maintainAspectRatio: false, 
+    }
 });
 
 
 // Doughnut Graph
 // //////////////
 
-
+// Init Sample Count for Each Site
 var swataraCreekCount = 0;
 var southBranchMoorefieldCount = 0;
 var westBranchMahantangoCreekCount = 0;
@@ -168,8 +166,7 @@ var cheatRiverCount = 0;
 var greenbrierRiverCaldwellCount = 0;
 var greenbrierRiverSeebertCount = 0;
 
-// console.log(site);
-
+// Increment Site Count for Each Entry in Data
 site.forEach(entry => {
   if (entry == "Swatara Creek") {
     swataraCreekCount += 1;
@@ -196,6 +193,7 @@ site.forEach(entry => {
   }
 })
 
+// Create Array of Site Names for Use on Display
 const waterSiteNames = ["Swatara Creek", 
   "South Branch Moorefield", 
   "West Branch Mahantango Creek", 
@@ -210,6 +208,7 @@ const waterSiteNames = ["Swatara Creek",
   "Greenbrier River Seebert"
 ]
 
+// Create Array of Sample Totals
 const waterSiteSampleCounts = [swataraCreekCount, 
   southBranchMoorefieldCount, 
   westBranchMahantangoCreekCount,
@@ -223,15 +222,11 @@ const waterSiteSampleCounts = [swataraCreekCount,
   greenbrierRiverSeebertCount
 ]
 
-// console.log(waterSiteNames);
-// console.log(waterSiteSampleCounts);
-
 const coursesData = { 
   labels: waterSiteNames, 
   datasets: [{ 
     data: waterSiteSampleCounts, 
-    backgroundColor: ['#FF6384', '#36A2EB', 
-      '#FFCE56', '#4CAF50', '#9C27B0'], 
+    backgroundColor: colors
   }], 
 }; 
 
@@ -247,14 +242,134 @@ const config = {
     }, 
   }, 
 }; 
-const ctx3 = document.getElementById('myChart3').getContext('2d'); 
+const ctx3 = document.getElementById('doughnutChart').getContext('2d'); 
+new Chart(ctx3, config);
+
+
+// Horizontal Bar Chart
+// ////////////////////
+
+
+// Parse Tissue Data with D3
+// const tissueData = await d3.csv("/tissue-data.csv"); 
+
+// Remove Unwanted Key/Value Pairs
+// tissueData.forEach(object => {
+//   delete object["Site name"];
+//   delete object["Fish identification"];
+//   delete object["Sex"];
+//   delete object["Collection Date"];
+//   delete object["Age (years)"];
+//   delete object["Length (mm)"];
+//   delete object["Weight (gm)"];
+
+//   // Rename Remaining Keys "Age (years)" and "Total PFAS" to "x" and "y"
+//   // object["x"] = object['Age (years)'];
+//   // delete object['Age (years)'];
+//   // object["y"] = object['Total PFAS'];
+//   // delete object['Total PFAS'];
+
+// })
+
+// console.log(Object.keys(tissueData[0]));
+// console.log(tissueData);
+
+
+const tissueDataText = await d3.text("/tissue-data.csv");
+// console.log(tissueDataText);
+
+const numberOfColumns = (await d3.csv("/tissue-data.csv")).length;
+
+const results = [];
+
+
+function getAverageColumnValue(column) {
+
+  try {
+    
+    // Split the contents into rows
+    const rows = tissueDataText.split('\n').slice(1);
   
-new Chart(ctx3, config); 
+    
+    // Initialize variables for sum and count
+    let sum = 0;
+    let count = 0;
+    
+    // Loop through each row and add the value in the specified column to the sum
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i].split(',');
+      if (row[column]) {
+        sum += parseFloat(row[column]);
+        count++;
+      }
+    }
+    
+    // Calculate and return the average
+    let average = sum / count;
+    results.push(average);
+    // console.log(results);
+  
+  } catch (error) {
+    // Log the error and return 0
+    console.error(error);
+    // return 0;
+  }
+};
 
-// fetch('https://www.sciencebase.gov/catalog/item/65e22659d34e5855ff4cf488?format=json') // api for the get request
-//     .then(response => response.json())
-//     .then(data => console.log(data));
+// Need to use this to execute function below 28 times
+for (let i = 0; i < numberOfColumns; i++) {
+  // console.log(`Iteration is #${i}`)
+  getAverageColumnValue(i);
+}
 
+const isolatedEntriesByCommas = tissueDataText.split(',');
+// console.log(isolatedEntriesByCommas);
+const columnLabels = isolatedEntriesByCommas.slice(0,numberOfColumns);
+// console.log(columnLabels);
+// console.log(results);
+
+const resultsExcludingNAN = [];
+resultsExcludingNAN.push(results[13], results[14], results[16], results[18], results[19], results[21], results[22]);
+console.log(resultsExcludingNAN);
+
+const resultsLabelsExcludingNAN = [];
+resultsLabelsExcludingNAN.push(columnLabels[13], columnLabels[14], columnLabels[16], columnLabels[18], columnLabels[19], columnLabels[21], columnLabels[22]);
+console.log(resultsLabelsExcludingNAN);
+
+
+
+const ctx4 = document.getElementById('horizontalBarChart');
+
+new Chart(ctx4, {
+  type: 'bar',
+  data: {
+    labels: resultsLabelsExcludingNAN,
+    datasets: [{
+      label: `Average Result Total`,
+      data: resultsExcludingNAN,
+      borderWidth: 1,
+      borderColor: colors[4],      
+      backgroundColor: colors[4], 
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+        display: true,
+        labelString: 'Your Title'
+      }
+    }
+  }
+});
+
+
+
+// Load Available Text Content from JSON
+// /////////////////////////////////////
 
 fetch('https://www.sciencebase.gov/catalog/item/65e22659d34e5855ff4cf488?format=json', { 
   method: 'GET'
@@ -267,5 +382,4 @@ fetch('https://www.sciencebase.gov/catalog/item/65e22659d34e5855ff4cf488?format=
   document.getElementById("studySummary").innerHTML = data.summary;
   document.getElementById("studyPurpose").innerHTML = data.purpose;
   document.getElementById("studyRights").innerHTML = `[The study] ${data.rights}`;
-  // console.log(data)
 });

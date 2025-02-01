@@ -38,10 +38,10 @@
       </section>
 
       <section>
-        <h2>Sample Distribution and Site Locations</h2>
+        <h2>Plasma Sample Distribution and Site Locations</h2>
         <div class="mapGrid">
           <div id="doughnut">
-              <canvas id="myChart3" height="700"></canvas>
+              <canvas id="doughnutChart" height="600"></canvas>
           </div>
           <img id="map" src="/Mid-Atlantic-Map.svg" alt="" srcset="">
         </div>
@@ -78,17 +78,17 @@
       </section>
 
       <section>
-        <h2>Total Plasma PFAS (ng/ml) Charted Over Time</h2>
+        <h2>Total Plasma PFAS (ng/ml) vs Time</h2>
         <h2 id="json-title"></h2>
-        <div id="chartContainer">
-            <canvas id="myChart"></canvas>
+        <div class="chartContainer">
+            <canvas id="verticalBarChart"></canvas>
         </div>
       </section>
       
       <section>
-        <h2>Fish Age Charted Against Total Plasma PFAS (ng/ml)</h2>
-        <div id="chartContainer">
-            <canvas id="myChart2" height="700"></canvas>
+        <h2>Fish Age vs Against Total Plasma PFAS (ng/ml)</h2>
+        <div class="chartContainer">
+            <canvas id="scatterChart" height="400"></canvas>
         </div>
       </section>
 
@@ -104,6 +104,13 @@
             comparisons. Twenty-eight compounds were analyzed for but only those which were detected at 
             least once are reported.
         </p>
+      </section>
+
+      <section>
+        <h2>Average Detected Totals (ng/ml), Tissue</h2>
+        <div class="chartContainer">
+            <canvas id="horizontalBarChart" height="400"></canvas>
+        </div>
       </section>
 
       <section>

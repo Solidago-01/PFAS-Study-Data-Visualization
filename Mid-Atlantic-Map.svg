@@ -4,7 +4,10 @@
   <defs>
     <style>
       .st0 {
-        fill: #61b4f6;
+        <!-- fill: #61b4f6; -->
+        <!-- fill: #32FFF5; -->
+        <!-- fill: #5F66F4; -->
+        fill: #32A3FF;
       }
 
       .st1 {
