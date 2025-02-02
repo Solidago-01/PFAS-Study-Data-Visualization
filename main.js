@@ -1,5 +1,5 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
-console.log("import successful");
+console.log("d3 import successful");
 
 // Create Array of Colors to Use in Charts
 const colors = ['#5fb1f4', '#5f66f4', '#5ff4ed', '#f4d65f', '#f48c5f', '#5ff4a5'];
@@ -14,8 +14,17 @@ const site = [];
 const unsortedData = [];
 
 // Parse CSV Data Using D3
-const data = await d3.text("/plasma-data.csv"); 
-console.log("first d3 parse successful");
+// const data = await d3.text("/plasma-data.csv"); 
+// console.log("first d3 parse successful");
+// console.log(data);
+
+let data = await fetch("/plasma-data.csv")
+  .then((response) => response.text())
+  .then((data) => {
+    return data
+  }
+);
+console.log("new test fetch sucessful, data assigned");
 
 // Split Rows On Every Line Break
 // Returns array of rows as strings, omits the first row (category names)
