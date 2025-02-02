@@ -18,21 +18,28 @@ const unsortedData = [];
 // console.log("first d3 parse successful");
 // console.log(data);
 
-let data = await fetch("/plasma-data.csv")
-  .then((response) => response.text())
-  .then((data) => {
-    return data
-  }
-);
-console.log("new test fetch sucessful, data assigned");
+// let data = await fetch("/plasma-data.csv")
+// .then((response) => response.text())
+// .then((data) => {
+//   return data
+// })
+// .catch((error) => {
+//   console.log(error)
+// });
 
-// Split Rows On Every Line Break
-// Returns array of rows as strings, omits the first row (category names)
-const table = data.split('\n').slice(1);
+async function getPlasmaCSV() {
+  // console.log('calling');
+  const data = await d3.text("/plasma-data.csv");
+  // return content
+  // Expected output: "resolved"
 
-// Split Row Strings Into Separate Values Along Commas
-// For each row, returns array of newly split values
-table.forEach(row => {
+  // Split Rows On Every Line Break
+  // Returns array of rows as strings, omits the first row (category names)
+  const table = data.split('\n').slice(1);
+
+  // Split Row Strings Into Separate Values Along Commas
+  // For each row, returns array of newly split values
+  table.forEach(row => {
     const column = row.split(',');
 
     // Per Row, Extract Only Matching Value at Named Column
@@ -61,7 +68,6 @@ table.forEach(row => {
     unsortedDataPoint.push(siteName);
     unsortedData.push(unsortedDataPoint);
 })
-
 
 // Custom Ascending Sort for Date/Time Strings
 const sortedData = unsortedData.sort(function(a, b) {
@@ -108,6 +114,94 @@ new Chart(ctx, {
     }
   }
 });
+}
+
+getPlasmaCSV();
+// console.log(data);
+
+console.log("new test fetch sucessful, data assigned");
+
+// // Split Rows On Every Line Break
+// // Returns array of rows as strings, omits the first row (category names)
+// const table = data.split('\n').slice(1);
+
+// // Split Row Strings Into Separate Values Along Commas
+// // For each row, returns array of newly split values
+// table.forEach(row => {
+//     const column = row.split(',');
+
+//     // Per Row, Extract Only Matching Value at Named Column
+//     const siteName = column[0];
+//     const fishIdentification = column[1];
+//     const collectionDate = column[2];
+//     const sex = column[3];
+//     const age = column[4];
+//     const length = column[5];
+//     const weight = column[6];
+//     const PFOS = column[7];
+//     const PFDA = column[8];
+//     const PFUnA = column[9];
+//     const PFUoA = column[10];
+//     const PFOSA = column[11];
+//     const PFNA = column[12];
+//     const PFBA = column[13];
+//     const PFPeA = column[14];
+//     const PFOA = column[15];
+//     const totalPFAS = column[16];
+    
+//     // Generate Unsorted, Binded Data to Sort(), and Resplit
+//     const unsortedDataPoint = [];
+//     unsortedDataPoint.push(collectionDate);
+//     unsortedDataPoint.push(Number(totalPFAS));
+//     unsortedDataPoint.push(siteName);
+//     unsortedData.push(unsortedDataPoint);
+// })
+
+// // Custom Ascending Sort for Date/Time Strings
+// const sortedData = unsortedData.sort(function(a, b) {
+//     // Convert Date Strings to Date Objects
+//     let dateA = new Date(a[0]);
+//     let dateB = new Date(b[0]);
+  
+//     // Subtract the Dates for Value that is Either Negative, Positive, or Zero
+//     return dateA - dateB;
+// });
+
+// sortedData.forEach(dataPair => {
+//     const a = dataPair[0];
+//     xLabels.push(a);
+//     const b = dataPair[1];
+//     yValues.push(b);
+//     const c = dataPair[2];
+//     site.push(c);
+// })
+
+// const ctx = document.getElementById('verticalBarChart');
+
+// new Chart(ctx, {
+//   type: 'bar',
+//   data: {
+//     labels: xLabels,
+//     datasets: [{
+//       label: `Total PFAS`,
+//       data: yValues,
+//       borderWidth: 1,
+//       borderColor: colors[3],      
+//       backgroundColor: colors[3], 
+//     }]
+//   },
+//   options: {
+//     responsive: true,
+//     maintainAspectRatio: false,
+//     scales: {
+//       y: {
+//         beginAtZero: true,
+//         display: true,
+//         labelString: 'Your Title'
+//       }
+//     }
+//   }
+// });
 
 
 // Scatter Plot
@@ -116,7 +210,33 @@ new Chart(ctx, {
 // Call Data as Array of Objects
 // Scatter plot will use array of objects
 const data2 = await d3.csv("/plasma-data.csv"); 
+console.log(data2);
 console.log("second d3 parse successful");
+
+// let data2Alt = await d3.csv("/plasma-data.csv")
+// .then((response) => response.json())
+// .then((data) => {
+//   return data
+// })
+// .catch((error) => {
+//   console.log(error)
+// });
+// console.log(data2Alt);
+
+
+// 
+
+// let data2Alt = await fetch("/plasma-data.csv")
+// .then((response) => response.json())
+// .then((data) => {
+//   return data
+// })
+// .catch((error) => {
+//   console.log(error)
+// });
+// console.log(data2Alt);
+
+// 
 
 
 // Remove Unwanted Key/Value Pairs
