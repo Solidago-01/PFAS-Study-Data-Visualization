@@ -1,4 +1,5 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+console.log("import successful");
 
 // Create Array of Colors to Use in Charts
 const colors = ['#5fb1f4', '#5f66f4', '#5ff4ed', '#f4d65f', '#f48c5f', '#5ff4a5'];
@@ -14,6 +15,7 @@ const unsortedData = [];
 
 // Parse CSV Data Using D3
 const data = await d3.text("/plasma-data.csv"); 
+console.log("first d3 parse successful");
 
 // Split Rows On Every Line Break
 // Returns array of rows as strings, omits the first row (category names)
@@ -105,6 +107,8 @@ new Chart(ctx, {
 // Call Data as Array of Objects
 // Scatter plot will use array of objects
 const data2 = await d3.csv("/plasma-data.csv"); 
+console.log("second d3 parse successful");
+
 
 // Remove Unwanted Key/Value Pairs
 data2.forEach(object => {
@@ -249,39 +253,12 @@ new Chart(ctx3, config);
 // Horizontal Bar Chart
 // ////////////////////
 
-
-// Parse Tissue Data with D3
-// const tissueData = await d3.csv("/tissue-data.csv"); 
-
-// Remove Unwanted Key/Value Pairs
-// tissueData.forEach(object => {
-//   delete object["Site name"];
-//   delete object["Fish identification"];
-//   delete object["Sex"];
-//   delete object["Collection Date"];
-//   delete object["Age (years)"];
-//   delete object["Length (mm)"];
-//   delete object["Weight (gm)"];
-
-//   // Rename Remaining Keys "Age (years)" and "Total PFAS" to "x" and "y"
-//   // object["x"] = object['Age (years)'];
-//   // delete object['Age (years)'];
-//   // object["y"] = object['Total PFAS'];
-//   // delete object['Total PFAS'];
-
-// })
-
-// console.log(Object.keys(tissueData[0]));
-// console.log(tissueData);
-
-
 const tissueDataText = await d3.text("/tissue-data.csv");
-// console.log(tissueDataText);
-
+console.log("third d3 parse successful");
 const numberOfColumns = (await d3.csv("/tissue-data.csv")).length;
+console.log("fourth d3 parse successful");
 
 const results = [];
-
 
 function getAverageColumnValue(column) {
 
@@ -330,11 +307,11 @@ const columnLabels = isolatedEntriesByCommas.slice(0,numberOfColumns);
 
 const resultsExcludingNAN = [];
 resultsExcludingNAN.push(results[13], results[14], results[16], results[18], results[19], results[21], results[22]);
-console.log(resultsExcludingNAN);
+// console.log(resultsExcludingNAN);
 
 const resultsLabelsExcludingNAN = [];
 resultsLabelsExcludingNAN.push(columnLabels[13], columnLabels[14], columnLabels[16], columnLabels[18], columnLabels[19], columnLabels[21], columnLabels[22]);
-console.log(resultsLabelsExcludingNAN);
+// console.log(resultsLabelsExcludingNAN);
 
 
 
@@ -383,3 +360,4 @@ fetch('https://www.sciencebase.gov/catalog/item/65e22659d34e5855ff4cf488?format=
   document.getElementById("studyPurpose").innerHTML = data.purpose;
   document.getElementById("studyRights").innerHTML = `[The study] ${data.rights}`;
 });
+console.log("Final fetch successful");
