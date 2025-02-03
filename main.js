@@ -27,7 +27,7 @@ const unsortedData = [];
 //   console.log(error)
 // });
 
-async function getPlasmaCSV() {
+async function getPlasmaDataAsString() {
   // console.log('calling');
   const data = await d3.text("/plasma-data.csv");
   // return content
@@ -116,7 +116,7 @@ new Chart(ctx, {
 });
 }
 
-getPlasmaCSV();
+getPlasmaDataAsString();
 // console.log(data);
 
 console.log("new test fetch sucessful, data assigned");
@@ -209,284 +209,283 @@ console.log("new test fetch sucessful, data assigned");
 
 // Call Data as Array of Objects
 // Scatter plot will use array of objects
-const data2 = await d3.csv("/plasma-data.csv"); 
-console.log(data2);
-console.log("second d3 parse successful");
 
-// let data2Alt = await d3.csv("/plasma-data.csv")
-// .then((response) => response.json())
-// .then((data) => {
-//   return data
-// })
-// .catch((error) => {
-//   console.log(error)
-// });
-// console.log(data2Alt);
+async function drawScatterPlot() {
 
 
-// 
+  const data2 = await d3.csv("/plasma-data.csv"); 
+  console.log(data2);
+  console.log("second d3 parse successful");
+  
+  // Remove Unwanted Key/Value Pairs
+  data2.forEach(object => {
+    delete object["Collection Date"];
+    delete object["Length (mm)"];
+    delete object["PFBA (ng/ml)"];
+    delete object["PFDA (ng/ml)"];
+    delete object["PFDoA (ng/ml)"];
+    delete object["PFNA (ng/ml)"];
+    delete object["PFOA (ng/ml)"];
+    delete object["PFOS (ng/ml)"];
+    delete object["PFOSA (ng/ml)"];
+    delete object["PFPeA (ng/ml)"];
+    delete object["PFUnA (ng/ml)"];
+    delete object["Sex"];
+    delete object["Site name "];
+    delete object["Weight (gms)"];
+    delete object["Fish identification"];
+  
+    // Rename Remaining Keys "Age (years)" and "Total PFAS" to "x" and "y"
+    object["x"] = object['Age (years)'];
+    delete object['Age (years)'];
+    object["y"] = object['Total PFAS'];
+    delete object['Total PFAS'];
+  })
+  
+  var ctx2 = document.getElementById("scatterChart").getContext('2d');
+  
+  var myChart2 = new Chart(ctx2, {
+      type: 'scatter',
+      data: {
+          datasets: [{
+                  label: 'Age (Years) vs Total PFAS', 
+                  data: data2, 
+            borderColor: colors[2],      
+            backgroundColor: colors[2], 
+              }]
+      },
+      options: {
+        responsive: true, 
+        maintainAspectRatio: false, 
+      }
+  });
+};
+drawScatterPlot();
 
-// let data2Alt = await fetch("/plasma-data.csv")
-// .then((response) => response.json())
-// .then((data) => {
-//   return data
-// })
-// .catch((error) => {
-//   console.log(error)
-// });
-// console.log(data2Alt);
-
-// 
-
-
-// Remove Unwanted Key/Value Pairs
-data2.forEach(object => {
-  delete object["Collection Date"];
-  delete object["Length (mm)"];
-  delete object["PFBA (ng/ml)"];
-  delete object["PFDA (ng/ml)"];
-  delete object["PFDoA (ng/ml)"];
-  delete object["PFNA (ng/ml)"];
-  delete object["PFOA (ng/ml)"];
-  delete object["PFOS (ng/ml)"];
-  delete object["PFOSA (ng/ml)"];
-  delete object["PFPeA (ng/ml)"];
-  delete object["PFUnA (ng/ml)"];
-  delete object["Sex"];
-  delete object["Site name "];
-  delete object["Weight (gms)"];
-  delete object["Fish identification"];
-
-  // Rename Remaining Keys "Age (years)" and "Total PFAS" to "x" and "y"
-  object["x"] = object['Age (years)'];
-  delete object['Age (years)'];
-  object["y"] = object['Total PFAS'];
-  delete object['Total PFAS'];
-})
-
-var ctx2 = document.getElementById("scatterChart").getContext('2d');
-
-var myChart2 = new Chart(ctx2, {
-    type: 'scatter',
-    data: {
-        datasets: [{
-                label: 'Age (Years) vs Total PFAS', 
-                data: data2, 
-          borderColor: colors[2],      
-          backgroundColor: colors[2], 
-            }]
-    },
-    options: {
-      responsive: true, 
-      maintainAspectRatio: false, 
-    }
-});
 
 
 // Doughnut Graph
 // //////////////
 
-// Init Sample Count for Each Site
-var swataraCreekCount = 0;
-var southBranchMoorefieldCount = 0;
-var westBranchMahantangoCreekCount = 0;
-var pineCreekCount = 0;
-var chillisquaqueCreekCount = 0;
-var antietamCreekCount = 0;
-var susquehannaRiverNearSelinsgroveCount = 0;
-var southBranchPotomacPetersburgCount = 0;
-var cheatRiverCount = 0;
-var greenbrierRiverCaldwellCount = 0;
-var greenbrierRiverSeebertCount = 0;
+async function drawDoughnutGraph() {
 
-// Increment Site Count for Each Entry in Data
-site.forEach(entry => {
-  if (entry == "Swatara Creek") {
-    swataraCreekCount += 1;
-  } else if (entry == "South Branch Moorefield") {
-    southBranchMoorefieldCount += 1;
-  } else if (entry == "West Branch Mahantango Creek") {
-    westBranchMahantangoCreekCount += 1;
-  } else if (entry == "Pine Creek") {
-    pineCreekCount += 1;
-  } else if (entry == "Chillisquaque Creek") {
-    chillisquaqueCreekCount += 1;
-  } else if (entry == "Antietam Creek") {
-    antietamCreekCount += 1;
-  } else if (entry == "Susquehanna River near Selinsgrove") {
-    susquehannaRiverNearSelinsgroveCount += 1;
-  } else if (entry == "South Branch Potomac Petersburg") {
-    southBranchPotomacPetersburgCount += 1;
-  } else if (entry == "Cheat River") {
-    cheatRiverCount += 1;
-  } else if (entry == "Greenbrier River Caldwell") {
-    greenbrierRiverCaldwellCount += 1;
-  } else if (entry == "Greenbrier River Seebert") {
-    greenbrierRiverSeebertCount += 1;
-  }
-})
 
-// Create Array of Site Names for Use on Display
-const waterSiteNames = ["Swatara Creek", 
-  "South Branch Moorefield", 
-  "West Branch Mahantango Creek", 
-  "Pine Creek", 
-  "Chillisquaque Creek", 
-  "Antietam Creek",
-  "Susquehanna River near Selinsgrove",
-  "South Branch Potomac Petersburg",
-  "South Branch Potomac Petersburg",
-  "Cheat River",
-  "Greenbrier River Caldwell",
-  "Greenbrier River Seebert"
-]
-
-// Create Array of Sample Totals
-const waterSiteSampleCounts = [swataraCreekCount, 
-  southBranchMoorefieldCount, 
-  westBranchMahantangoCreekCount,
-  pineCreekCount,
-  chillisquaqueCreekCount,
-  antietamCreekCount,
-  susquehannaRiverNearSelinsgroveCount,
-  southBranchPotomacPetersburgCount,
-  cheatRiverCount,
-  greenbrierRiverCaldwellCount,
-  greenbrierRiverSeebertCount
-]
-
-const coursesData = { 
-  labels: waterSiteNames, 
-  datasets: [{ 
-    data: waterSiteSampleCounts, 
-    backgroundColor: colors
-  }], 
-}; 
-
-const config = { 
-  type: 'doughnut', 
-  data: coursesData, 
-  options: { 
-    plugins: { 
-      title: { 
-        display: true, 
-        text: 'Number of Samples Taken per Site', 
+  // Init Sample Count for Each Site
+  var swataraCreekCount = 0;
+  var southBranchMoorefieldCount = 0;
+  var westBranchMahantangoCreekCount = 0;
+  var pineCreekCount = 0;
+  var chillisquaqueCreekCount = 0;
+  var antietamCreekCount = 0;
+  var susquehannaRiverNearSelinsgroveCount = 0;
+  var southBranchPotomacPetersburgCount = 0;
+  var cheatRiverCount = 0;
+  var greenbrierRiverCaldwellCount = 0;
+  var greenbrierRiverSeebertCount = 0;
+  
+  // Increment Site Count for Each Entry in Data
+  site.forEach(entry => {
+    if (entry == "Swatara Creek") {
+      swataraCreekCount += 1;
+    } else if (entry == "South Branch Moorefield") {
+      southBranchMoorefieldCount += 1;
+    } else if (entry == "West Branch Mahantango Creek") {
+      westBranchMahantangoCreekCount += 1;
+    } else if (entry == "Pine Creek") {
+      pineCreekCount += 1;
+    } else if (entry == "Chillisquaque Creek") {
+      chillisquaqueCreekCount += 1;
+    } else if (entry == "Antietam Creek") {
+      antietamCreekCount += 1;
+    } else if (entry == "Susquehanna River near Selinsgrove") {
+      susquehannaRiverNearSelinsgroveCount += 1;
+    } else if (entry == "South Branch Potomac Petersburg") {
+      southBranchPotomacPetersburgCount += 1;
+    } else if (entry == "Cheat River") {
+      cheatRiverCount += 1;
+    } else if (entry == "Greenbrier River Caldwell") {
+      greenbrierRiverCaldwellCount += 1;
+    } else if (entry == "Greenbrier River Seebert") {
+      greenbrierRiverSeebertCount += 1;
+    }
+  })
+  
+  // Create Array of Site Names for Use on Display
+  const waterSiteNames = ["Swatara Creek", 
+    "South Branch Moorefield", 
+    "West Branch Mahantango Creek", 
+    "Pine Creek", 
+    "Chillisquaque Creek", 
+    "Antietam Creek",
+    "Susquehanna River near Selinsgrove",
+    "South Branch Potomac Petersburg",
+    "South Branch Potomac Petersburg",
+    "Cheat River",
+    "Greenbrier River Caldwell",
+    "Greenbrier River Seebert"
+  ]
+  
+  // Create Array of Sample Totals
+  const waterSiteSampleCounts = [swataraCreekCount, 
+    southBranchMoorefieldCount, 
+    westBranchMahantangoCreekCount,
+    pineCreekCount,
+    chillisquaqueCreekCount,
+    antietamCreekCount,
+    susquehannaRiverNearSelinsgroveCount,
+    southBranchPotomacPetersburgCount,
+    cheatRiverCount,
+    greenbrierRiverCaldwellCount,
+    greenbrierRiverSeebertCount
+  ]
+  
+  const coursesData = { 
+    labels: waterSiteNames, 
+    datasets: [{ 
+      data: waterSiteSampleCounts, 
+      backgroundColor: colors
+    }], 
+  }; 
+  
+  const config = { 
+    type: 'doughnut', 
+    data: coursesData, 
+    options: { 
+      plugins: { 
+        title: { 
+          display: true, 
+          text: 'Number of Samples Taken per Site', 
+        }, 
       }, 
     }, 
-  }, 
-}; 
-const ctx3 = document.getElementById('doughnutChart').getContext('2d'); 
-new Chart(ctx3, config);
+  }; 
+  const ctx3 = document.getElementById('doughnutChart').getContext('2d'); 
+  new Chart(ctx3, config);
+}
+
+drawDoughnutGraph();
 
 
 // Horizontal Bar Chart
 // ////////////////////
 
-const tissueDataText = await d3.text("/tissue-data.csv");
-console.log("third d3 parse successful");
-const numberOfColumns = (await d3.csv("/tissue-data.csv")).length;
-console.log("fourth d3 parse successful");
+async function drawHorizontalBarChart() {
 
-const results = [];
 
-function getAverageColumnValue(column) {
-
-  try {
-    
-    // Split the contents into rows
-    const rows = tissueDataText.split('\n').slice(1);
+  const tissueDataText = await d3.text("/tissue-data.csv");
+  console.log("third d3 parse successful");
+  const numberOfColumns = (await d3.csv("/tissue-data.csv")).length;
+  console.log("fourth d3 parse successful");
   
+  const results = [];
+  
+  function getAverageColumnValue(column) {
+  
+    try {
+      
+      // Split the contents into rows
+      const rows = tissueDataText.split('\n').slice(1);
     
-    // Initialize variables for sum and count
-    let sum = 0;
-    let count = 0;
+      
+      // Initialize variables for sum and count
+      let sum = 0;
+      let count = 0;
+      
+      // Loop through each row and add the value in the specified column to the sum
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i].split(',');
+        if (row[column]) {
+          sum += parseFloat(row[column]);
+          count++;
+        }
+      }
+      
+      // Calculate and return the average
+      let average = sum / count;
+      results.push(average);
+      // console.log(results);
     
-    // Loop through each row and add the value in the specified column to the sum
-    for (let i = 0; i < rows.length; i++) {
-      const row = rows[i].split(',');
-      if (row[column]) {
-        sum += parseFloat(row[column]);
-        count++;
+    } catch (error) {
+      // Log the error and return 0
+      console.error(error);
+      // return 0;
+    }
+  };
+  
+  // Need to use this to execute function below 28 times
+  for (let i = 0; i < numberOfColumns; i++) {
+    // console.log(`Iteration is #${i}`)
+    getAverageColumnValue(i);
+  }
+  
+  const isolatedEntriesByCommas = tissueDataText.split(',');
+  // console.log(isolatedEntriesByCommas);
+  const columnLabels = isolatedEntriesByCommas.slice(0,numberOfColumns);
+  // console.log(columnLabels);
+  // console.log(results);
+  
+  const resultsExcludingNAN = [];
+  resultsExcludingNAN.push(results[13], results[14], results[16], results[18], results[19], results[21], results[22]);
+  // console.log(resultsExcludingNAN);
+  
+  const resultsLabelsExcludingNAN = [];
+  resultsLabelsExcludingNAN.push(columnLabels[13], columnLabels[14], columnLabels[16], columnLabels[18], columnLabels[19], columnLabels[21], columnLabels[22]);
+  // console.log(resultsLabelsExcludingNAN);
+  
+  
+  
+  const ctx4 = document.getElementById('horizontalBarChart');
+  
+  new Chart(ctx4, {
+    type: 'bar',
+    data: {
+      labels: resultsLabelsExcludingNAN,
+      datasets: [{
+        label: `Average Result Total`,
+        data: resultsExcludingNAN,
+        borderWidth: 1,
+        borderColor: colors[4],      
+        backgroundColor: colors[4], 
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          display: true,
+          labelString: 'Your Title'
+        }
       }
     }
-    
-    // Calculate and return the average
-    let average = sum / count;
-    results.push(average);
-    // console.log(results);
-  
-  } catch (error) {
-    // Log the error and return 0
-    console.error(error);
-    // return 0;
-  }
-};
-
-// Need to use this to execute function below 28 times
-for (let i = 0; i < numberOfColumns; i++) {
-  // console.log(`Iteration is #${i}`)
-  getAverageColumnValue(i);
+  });
 }
 
-const isolatedEntriesByCommas = tissueDataText.split(',');
-// console.log(isolatedEntriesByCommas);
-const columnLabels = isolatedEntriesByCommas.slice(0,numberOfColumns);
-// console.log(columnLabels);
-// console.log(results);
+drawHorizontalBarChart();
 
-const resultsExcludingNAN = [];
-resultsExcludingNAN.push(results[13], results[14], results[16], results[18], results[19], results[21], results[22]);
-// console.log(resultsExcludingNAN);
-
-const resultsLabelsExcludingNAN = [];
-resultsLabelsExcludingNAN.push(columnLabels[13], columnLabels[14], columnLabels[16], columnLabels[18], columnLabels[19], columnLabels[21], columnLabels[22]);
-// console.log(resultsLabelsExcludingNAN);
-
-
-
-const ctx4 = document.getElementById('horizontalBarChart');
-
-new Chart(ctx4, {
-  type: 'bar',
-  data: {
-    labels: resultsLabelsExcludingNAN,
-    datasets: [{
-      label: `Average Result Total`,
-      data: resultsExcludingNAN,
-      borderWidth: 1,
-      borderColor: colors[4],      
-      backgroundColor: colors[4], 
-    }]
-  },
-  options: {
-    indexAxis: 'y',
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      y: {
-        beginAtZero: true,
-        display: true,
-        labelString: 'Your Title'
-      }
-    }
-  }
-});
 
 
 
 // Load Available Text Content from JSON
 // /////////////////////////////////////
 
-fetch('https://www.sciencebase.gov/catalog/item/65e22659d34e5855ff4cf488?format=json', { 
-  method: 'GET'
-})
-.then(function(response) { return response.json(); })
-.then(function(data) {
-  document.getElementById("studyTitle").innerHTML = data.title;
-  document.getElementById("studyCitation").innerHTML = data.citation;
-  document.getElementById("studyLink").href=data.link.url; 
-  document.getElementById("studySummary").innerHTML = data.summary;
-  document.getElementById("studyPurpose").innerHTML = data.purpose;
-  document.getElementById("studyRights").innerHTML = `[The study] ${data.rights}`;
-});
-console.log("Final fetch successful");
+async function updateText() {
+  fetch('https://www.sciencebase.gov/catalog/item/65e22659d34e5855ff4cf488?format=json', { 
+    method: 'GET'
+  })
+  .then(function(response) { return response.json(); })
+  .then(function(data) {
+    document.getElementById("studyTitle").innerHTML = data.title;
+    document.getElementById("studyCitation").innerHTML = data.citation;
+    document.getElementById("studyLink").href=data.link.url; 
+    document.getElementById("studySummary").innerHTML = data.summary;
+    document.getElementById("studyPurpose").innerHTML = data.purpose;
+    document.getElementById("studyRights").innerHTML = `[The study] ${data.rights}`;
+  });
+  console.log("Final fetch successful");
+
+}
+
+updateText();
