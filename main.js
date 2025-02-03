@@ -29,7 +29,7 @@ const unsortedData = [];
 
 async function getPlasmaDataAsString() {
   // console.log('calling');
-  const data = await d3.text("/plasma-data.csv");
+  const data = await d3.text("plasma-data.csv");
   // return content
   // Expected output: "resolved"
 
@@ -213,7 +213,7 @@ console.log("new test fetch sucessful, data assigned");
 async function drawScatterPlot() {
 
 
-  const data2 = await d3.csv("/plasma-data.csv"); 
+  const data2 = await d3.csv("plasma-data.csv"); 
   console.log(data2);
   console.log("second d3 parse successful");
   
@@ -372,9 +372,9 @@ drawDoughnutGraph();
 async function drawHorizontalBarChart() {
 
 
-  const tissueDataText = await d3.text("/tissue-data.csv");
+  const tissueDataText = await d3.text("tissue-data.csv");
   console.log("third d3 parse successful");
-  const numberOfColumns = (await d3.csv("/tissue-data.csv")).length;
+  const numberOfColumns = (await d3.csv("tissue-data.csv")).length;
   console.log("fourth d3 parse successful");
   
   const results = [];
