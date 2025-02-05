@@ -17,15 +17,19 @@
 
     <header>
 
-      <div class="heroImage">
-        <img id="forest" src="forest-hero.jpg" alt="">
-      </div>
-
-      <div class="heroText">
-        <h1 id="studyTitle">Title</h1>
-        <h2 id="studyCitation">Citation</h2>
-        <a id="studyLink" href="#" target="_blank">See Full Geological Survey Data Release →</a>
-      </div>
+        <div class="headerGrid">
+            <div class="heroImage">
+              <img id="forestInGrid" src="forest-hero.jpg" alt="">
+            </div>
+      
+            <div class="heroText">
+              <h1 id="studyTitle">Title</h1>
+              <div class="subtitleBlock">
+                  <h2 id="studyCitation">Citation</h2>
+                  <a id="studyLink" href="#" target="_blank">See Full Geological Survey Data Release →</a>
+              </div>
+            </div>
+        </div>
 
     </header>
 
@@ -41,10 +45,10 @@
       <section>
         <h2>Plasma Sample Distribution and Site Locations</h2>
         <div class="mapGrid">
-          <div id="doughnut">
-              <canvas id="doughnutChart" height="600"></canvas>
-          </div>
-          <img id="map" src="Mid-Atlantic-Map.svg" alt="" srcset="">
+            <div id="doughnut">
+                <canvas id="doughnutChart"></canvas>
+            </div>
+            <img id="map" src="Mid-Atlantic-Map.svg" alt="" srcset="">
         </div>
       </section>
 
@@ -79,7 +83,7 @@
       </section>
 
       <section>
-        <h2>Total Plasma PFAS (ng/ml) vs Time</h2>
+        <h2>Total Plasma PFAS (ng/ml) per Sample vs Time</h2>
         <h2 id="json-title"></h2>
         <div class="chartContainer">
             <canvas id="verticalBarChart"></canvas>
@@ -87,7 +91,7 @@
       </section>
       
       <section>
-        <h2>Fish Age vs Against Total Plasma PFAS (ng/ml)</h2>
+        <h2>Fish Age vs Total Plasma PFAS (ng/ml) per Sample</h2>
         <div class="chartContainer">
             <canvas id="scatterChart" height="400"></canvas>
         </div>

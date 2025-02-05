@@ -1,23 +1,40 @@
+/* //////////////////////// */
+/* Extra Large Desktop View */
+/* //////////////////////// */
+
+html {
+    overflow-x: hidden;
+}
+
 body {
+    overflow-x: hidden;
     margin: 0;
     background-color: black;
     color: white;
 }
 
-header {
+.headerGrid {
     display: grid;
     grid-template-columns: 2fr 2fr .5fr;
 }
 
 .heroImage {
     grid-column: 1;
-    width: 100%;
+}
+
+#forestInGrid {
+    width: 100%
 }
 
 .heroText {
     grid-column: 2;
     padding: 2rem;
     padding-bottom: 0;
+}
+
+.subtitleBlock {
+    background-color: black;
+    padding: 1rem;
 }
 
 h1 {
@@ -38,14 +55,13 @@ h2 {
 
 a {
     color: white;
-    /* margin: 3rem 0; */
     text-decoration: none;
     font-family: monospace;
     font-size: 1rem;
 }
 
 a:hover {
-    color: pink;
+    color: hotpink;
 }
 
 .contentWrapper {
@@ -75,8 +91,89 @@ p {
 
 #doughnut {
     grid-column: span 2;
+    padding: 1rem;
 }
 
 #map {
     grid-column: span 3;
+}
+
+/* //////////////////// */
+/* Regular Desktop View */
+/* //////////////////// */
+
+@media only screen and (max-width: 1760px) {
+
+    h1 {
+        font-size: 4rem;
+    }
+
+}
+
+/* ////////////////// */
+/* Small Desktop View */
+/* ////////////////// */
+
+@media only screen and (max-width: 1400px) {
+
+
+    header {
+        background-image: url("forest-hero.jpg");
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
+
+    .headerGrid {
+        display: grid;
+        grid-template-columns: 2fr 2fr;
+    }
+
+    #forestInGrid {
+        opacity: 0;
+    }
+
+    .mapGrid {
+        display: block;
+    }
+    
+    #doughnut {
+        display: none;
+    }
+
+}
+
+/* /////////// */
+/* Tablet View */
+/* /////////// */
+
+@media only screen and (max-width: 800px) {
+    
+    h1 {
+        font-size: 3rem;
+    }
+    
+    h2 {
+        font-size: 2rem;
+    }
+
+    .contentWrapper {
+        margin: 3rem;
+    }
+
+}
+
+/* /////////// */
+/* Mobile View */
+/* /////////// */
+
+@media only screen and (max-width: 600px) {
+
+    .contentWrapper {
+        margin: 2rem;
+    }
+
+    .subtitleBlock {
+        border: 2px dotted white;
+    }
+
 }
