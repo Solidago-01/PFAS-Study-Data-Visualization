@@ -4,6 +4,38 @@ import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 const colors = ['#5fb1f4', '#5f66f4', '#5ff4ed', '#f4d65f', '#f48c5f', '#5ff4a5'];
 
 
+// /////////////////////////////////////
+// Load Available Text Content from JSON
+// /////////////////////////////////////
+// Note: Some text content was staged statically due to absence from JSON
+
+async function updateText() {
+  try {
+    // Get Text from Original JSON Listing and Add to DOM
+    fetch('https://www.sciencebase.gov/catalog/item/65e22659d34e5855ff4cf488?format=json', { 
+    method: 'GET'
+  })
+  .then(function(response) { return response.json(); })
+  .then(function(data) {
+    document.getElementById("studyTitle").innerHTML = data.title;
+    document.getElementById("studyCitation").innerHTML = data.citation;
+    document.getElementById("studyLink").href=data.link.url; 
+    document.getElementById("studySummary").innerHTML = data.summary;
+    document.getElementById("studyPurpose").innerHTML = data.purpose;
+    document.getElementById("studyRights").innerHTML = `[The study] ${data.rights}`;
+  });
+
+  }
+
+  catch (error) {
+    console.error('Fetch error:', error);
+  }
+
+}
+
+updateText();
+
+
 // ///////////////////////
 // Draw Vertical Bar Chart
 // ///////////////////////
@@ -321,33 +353,3 @@ async function drawHorizontalBarChart() {
 }
 drawHorizontalBarChart();
 
-// /////////////////////////////////////
-// Load Available Text Content from JSON
-// /////////////////////////////////////
-// Note: Some text content was staged statically due to absence from JSON
-
-async function updateText() {
-  try {
-    // Get Text from Original JSON Listing and Add to DOM
-    fetch('https://www.sciencebase.gov/catalog/item/65e22659d34e5855ff4cf488?format=json', { 
-    method: 'GET'
-  })
-  .then(function(response) { return response.json(); })
-  .then(function(data) {
-    document.getElementById("studyTitle").innerHTML = data.title;
-    document.getElementById("studyCitation").innerHTML = data.citation;
-    document.getElementById("studyLink").href=data.link.url; 
-    document.getElementById("studySummary").innerHTML = data.summary;
-    document.getElementById("studyPurpose").innerHTML = data.purpose;
-    document.getElementById("studyRights").innerHTML = `[The study] ${data.rights}`;
-  });
-
-  }
-
-  catch (error) {
-    console.error('Fetch error:', error);
-  }
-
-}
-
-updateText();
